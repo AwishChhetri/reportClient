@@ -107,7 +107,7 @@ const StudentTable = () => {
 
   return (
     <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-3xl font-bold mb-6 text-red-600 text-center">Student Report Card</h1>
+      <h1 className="text-3xl font-bold mb-6 text-orange-400 text-center">Student Report Cards Generator</h1>
       <div className="overflow-x-auto mx-auto max-w-full">
         <table className="table-auto w-full max-w-6xl mx-auto border-collapse bg-gray-50 rounded-lg overflow-hidden shadow-sm">
           <thead>
