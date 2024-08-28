@@ -29,7 +29,7 @@ const DownloadReportCards = ({ students, currentBatch, remarks, marks, grades })
       doc.text(`Date of Birth: ${new Date(student.dob).toLocaleDateString()}`, 14, 70);
 
       // Remarks Section
-      doc.text(`Remarks: ${remarks[studentIndex] || 'Not filled'}`, 14, 80);
+      doc.text(`Remarks: ${remarks[studentIndex] || 'Good'}`, 14, 80);
 
       // Adding Static Data as an example
       doc.text('Teacher: Abish Chhetri', 105, 50, null, null, 'center');
