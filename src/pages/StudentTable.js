@@ -10,8 +10,9 @@ const StudentTable = () => {
   const [grades, setGrades] = useState({});
 
   useEffect(() => {
-    axios.get('/StudentDatas')
-      .then(response => {
+    axios
+      .get('/StudentDatas')
+      .then((response) => {
         setStudents(response.data);
         const initialRemarks = {};
         const initialMarks = {};
@@ -29,27 +30,27 @@ const StudentTable = () => {
         setMarks(initialMarks);
         setGrades(initialGrades);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error fetching students:', error);
       });
   }, []);
 
   const handleRemarksChange = (id, value) => {
-    setRemarks(prevRemarks => ({
+    setRemarks((prevRemarks) => ({
       ...prevRemarks,
       [id]: value,
     }));
   };
 
   const handleMarksChange = (studentId, subjectIndex, value) => {
-    setMarks(prevMarks => ({
+    setMarks((prevMarks) => ({
       ...prevMarks,
       [`${studentId}-${subjectIndex}`]: value,
     }));
   };
 
   const handleGradesChange = (studentId, subjectIndex, value) => {
-    setGrades(prevGrades => ({
+    setGrades((prevGrades) => ({
       ...prevGrades,
       [`${studentId}-${subjectIndex}`]: value,
     }));
@@ -58,36 +59,43 @@ const StudentTable = () => {
   const handleSubmit = () => {
     const currentStudents = students.slice(currentBatch * 3, currentBatch * 3 + 3);
 
-    const updatePromises = currentStudents.map(student => {
+    const updatePromises = currentStudents.map((student) => {
       const updatedSubjects = student.subjects.map((subject, subjectIndex) => ({
         ...subject,
         marks: marks[`${student._id}-${subjectIndex}`] || subject.marks,
         grade: grades[`${student._id}-${subjectIndex}`] || subject.grade,
       }));
 
-      console.log("Updating Subjects for student ID:", student._id, updatedSubjects);
-      console.log("Remarks for this student:", remarks[student._id]);
+      console.log('Updating Subjects for student ID:', student._id, updatedSubjects);
+      console.log('Remarks for this student:', remarks[student._id]);
 
-      return axios.post(`/StudentDatas/${student._id}/remarks`, {
-        remarks: remarks[student._id] || '',
-        subjects: updatedSubjects,
-      })
-      .then(response => {
-        console.log('Uploaded for student ID:', student._id, response.data);
-        return response.data;
-      })
-      .catch(error => {
-        console.error('Error uploading data for student ID:', student._id, error.response ? error.response.data : error.message);
-        throw error; // Ensure errors are propagated
-      });
+      return axios
+        .post(`/StudentDatas/${student._id}/remarks`, {
+          remarks: remarks[student._id] || '',
+          subjects: updatedSubjects,
+        })
+        .then((response) => {
+          console.log('Uploaded for student ID:', student._id, response.data);
+          return response.data;
+        })
+        .catch((error) => {
+          console.error(
+            'Error uploading data for student ID:',
+            student._id,
+            error.response ? error.response.data : error.message
+          );
+          throw error; // Ensure errors are propagated
+        });
     });
 
     Promise.all(updatePromises)
-      .then(results => {
+      .then((results) => {
         console.log('All student data updated successfully:', results);
+        alert('All student data updated successfully!');  // Alert for success
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error updating some student data:', error);
+        alert('Error updating some student data. Please try again.');  // Alert for failure
       });
   };
 
@@ -122,7 +130,7 @@ const StudentTable = () => {
             </tr>
           </thead>
           <tbody>
-            {currentStudents.map(student => (
+            {currentStudents.map((student) => (
               <tr key={student._id} className="hover:bg-gray-100 transition-all duration-200 ease-in-out">
                 <td className="border border-gray-300 px-6 py-4">{student.name}</td>
                 <td className="border border-gray-300 px-6 py-4">{student.rollNo}</td>
@@ -177,12 +185,12 @@ const StudentTable = () => {
         </button>
       </div>
       <DownloadReportCards
-      students={students}
-      currentBatch={currentBatch}
-      remarks={remarks}
-      marks={marks}
-      grades={grades}
-    />
+        students={students}
+        currentBatch={currentBatch}
+        remarks={remarks}
+        marks={marks}
+        grades={grades}
+      />
     </div>
   );
 };
